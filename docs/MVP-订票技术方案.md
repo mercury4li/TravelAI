@@ -758,3 +758,7 @@ sequenceDiagram
 部署流程单独维护在：
 
 [MVP-本地调试与部署流程.md](/Users/a1234/GolandProjects/TravelAI/docs/MVP-本地调试与部署流程.md)
+
+后端模块设计单独维护在：
+
+[MVP-后端模块设计.md](/Users/a1234/GolandProjects/TravelAI/docs/MVP-后端模块设计.md)
