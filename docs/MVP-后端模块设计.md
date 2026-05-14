@@ -52,44 +52,47 @@ npm install -D @types/express @types/cookie-parser @types/pg tsx
 ## 3. 模块划分
 
 ```text
-server/
-  index.ts
-  app.ts
-  config.ts
-  routes/
-    sessionRoutes.ts
-    conversationRoutes.ts
-    chatRoutes.ts
-    healthRoutes.ts
-  modules/
-    session/
-      anonymousSessionService.ts
-    conversation/
-      conversationService.ts
-      conversationRepository.ts
-      inMemoryConversationRepository.ts
-      postgresConversationRepository.ts
-    chat/
-      chatService.ts
-      mockChatResponder.ts
-    agent/
-      bookingAgent.ts
-      bookingAgentSchemas.ts
-    tickets/
-      ticketSearchService.ts
-      ranker.ts
-      providers/
-        ticketProvider.ts
-        mockProvider.ts
-        flyAiCliProvider.ts
-        officialLinkProvider.ts
-  schemas/
-    apiSchemas.ts
-    domainSchemas.ts
-  shared/
-    ids.ts
-    time.ts
-    logger.ts
+backend/
+  package.json
+  tsconfig.json
+  src/
+    index.ts
+    app.ts
+    config.ts
+    routes/
+      sessionRoutes.ts
+      conversationRoutes.ts
+      chatRoutes.ts
+      healthRoutes.ts
+    modules/
+      session/
+        anonymousSessionService.ts
+      conversation/
+        conversationService.ts
+        conversationRepository.ts
+        inMemoryConversationRepository.ts
+        postgresConversationRepository.ts
+      chat/
+        chatService.ts
+        mockChatResponder.ts
+      agent/
+        bookingAgent.ts
+        bookingAgentSchemas.ts
+      tickets/
+        ticketSearchService.ts
+        ranker.ts
+        providers/
+          ticketProvider.ts
+          mockProvider.ts
+          flyAiCliProvider.ts
+          officialLinkProvider.ts
+    schemas/
+      apiSchemas.ts
+      domainSchemas.ts
+    shared/
+      ids.ts
+      time.ts
+      logger.ts
 ```
 
 ### 3.1 API Layer

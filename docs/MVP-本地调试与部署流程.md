@@ -76,6 +76,7 @@ FLYAI_API_KEY=...
 建议命令：
 
 ```bash
+cd frontend
 npm install
 npm run dev
 ```

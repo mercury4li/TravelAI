@@ -1,0 +1,647 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>南宁周末机票选择卡片</title>
+  <style>
+    :root {
+      --bg: #f4f6f8;
+      --ink: #172033;
+      --muted: #657084;
+      --line: #d9e0ea;
+      --panel: #ffffff;
+      --green: #176b5b;
+      --blue: #2457a6;
+      --amber: #a15c07;
+      --red: #b42318;
+      --soft-green: #eaf5f1;
+      --soft-blue: #edf3ff;
+      --soft-amber: #fff4df;
+      --shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.76), rgba(244,246,248,0.94)),
+        radial-gradient(circle at 20% 10%, rgba(23,107,91,0.12), transparent 30%),
+        radial-gradient(circle at 86% 8%, rgba(36,87,166,0.12), transparent 26%),
+        var(--bg);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 42px;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 18px;
+      align-items: end;
+      padding: 10px 0 22px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 30px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+      max-width: 760px;
+    }
+
+    .route-badge {
+      display: grid;
+      gap: 6px;
+      justify-items: end;
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .route-badge strong {
+      color: var(--ink);
+      font-size: 18px;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      margin: 18px 0 12px;
+    }
+
+    .toolbar h2 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: 0;
+    }
+
+    .legend {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      line-height: 1.2;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--muted);
+    }
+
+    .pill.good {
+      color: var(--green);
+      background: var(--soft-green);
+      border-color: #b9d8ce;
+    }
+
+    .pill.warn {
+      color: var(--amber);
+      background: var(--soft-amber);
+      border-color: #ecd49e;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      position: relative;
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      min-height: 486px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .card.recommended {
+      border-color: #92c6b6;
+    }
+
+    .card-header {
+      padding: 16px 16px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .rank {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .rank strong {
+      font-size: 15px;
+      letter-spacing: 0;
+    }
+
+    .price {
+      color: var(--red);
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 0;
+      white-space: nowrap;
+    }
+
+    .price small {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .flight-name {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .flight-name h3 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: 0;
+    }
+
+    .airline {
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .times {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 12px;
+      align-items: center;
+      padding: 14px 16px;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .time-block {
+      min-width: 0;
+    }
+
+    .time {
+      display: block;
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .airport {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .arrow {
+      min-width: 78px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .arrow::before {
+      content: "";
+      display: block;
+      height: 1px;
+      margin-bottom: 6px;
+      background: var(--line);
+    }
+
+    .card-body {
+      padding: 16px;
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .score {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .metric {
+      padding: 10px 8px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fff;
+    }
+
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 14px;
+      letter-spacing: 0;
+    }
+
+    .analysis {
+      display: grid;
+      gap: 12px;
+    }
+
+    .analysis-section h4 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      letter-spacing: 0;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .card-footer {
+      padding: 14px 16px 16px;
+      border-top: 1px solid var(--line);
+      display: grid;
+      gap: 10px;
+    }
+
+    .button-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .book-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 0 14px;
+      border-radius: 7px;
+      background: var(--green);
+      color: #fff;
+      font-weight: 750;
+    }
+
+    .secondary-link {
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .note {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .summary {
+      margin-top: 16px;
+      padding: 18px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .summary h2 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+
+    .summary p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    @media (max-width: 980px) {
+      header,
+      .summary {
+        grid-template-columns: 1fr;
+      }
+
+      .route-badge {
+        justify-items: start;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        min-height: auto;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .page {
+        width: min(100% - 20px, 1180px);
+        padding-top: 16px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .legend {
+        justify-content: flex-start;
+      }
+
+      .times {
+        grid-template-columns: 1fr;
+      }
+
+      .arrow {
+        text-align: left;
+      }
+
+      .score {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <div>
+        <h1>北京到南宁：周末前后机票选择</h1>
+        <p class="subtitle">把可选航班按时间、价格、执行风险和下单确定性放在一起比较，方便直接选方案。</p>
+      </div>
+      <div class="route-badge">
+        <span>行程窗口</span>
+        <strong>2026-05-29 至 2026-06-01</strong>
+        <span>北京 BJS → 南宁 NNG</span>
+      </div>
+    </header>
+
+    <div class="toolbar">
+      <h2>候选航班卡片</h2>
+      <div class="legend">
+        <span class="pill good">推荐优先</span>
+        <span class="pill">可执行</span>
+        <span class="pill warn">需复核价格</span>
+      </div>
+    </div>
+
+    <section class="cards" aria-label="航班候选">
+      <article class="card recommended">
+        <div class="card-header">
+          <div class="rank">
+            <span class="pill good">首推</span>
+            <span class="price">¥520 <small>裸票</small></span>
+          </div>
+          <div class="flight-name">
+            <h3>CZ6284</h3>
+            <span class="airline">中国南方航空</span>
+          </div>
+          <span class="pill">周五晚出发</span>
+        </div>
+        <div class="times">
+          <div class="time-block">
+            <span class="time">20:00</span>
+            <span class="airport">北京大兴 PKX<br>5月29日 周五</span>
+          </div>
+          <div class="arrow">3小时25分</div>
+          <div class="time-block">
+            <span class="time">23:25</span>
+            <span class="airport">南宁吴圩 T2<br>5月29日 周五</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="score">
+            <div class="metric">
+              <span>时间利用</span>
+              <strong>最好</strong>
+            </div>
+            <div class="metric">
+              <span>执行难度</span>
+              <strong>中等</strong>
+            </div>
+            <div class="metric">
+              <span>下单确定性</span>
+              <strong>较高</strong>
+            </div>
+          </div>
+          <div class="analysis">
+            <div class="analysis-section">
+              <h4>优点</h4>
+              <ul>
+                <li>不需要请周五假，周六可以完整开始玩。</li>
+                <li>你已经在飞猪网页看到可订报价，机建燃油约 ¥170。</li>
+                <li>南航承运，网页上显示托运行李 20kg。</li>
+              </ul>
+            </div>
+            <div class="analysis-section">
+              <h4>缺点</h4>
+              <ul>
+                <li>23:25 到达，到酒店大概率接近或超过零点。</li>
+                <li>如果周五下班到大兴时间紧，需要预留交通缓冲。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="button-row">
+            <a class="book-link" href="https://a.feizhu.com/4Fhrre">打开飞猪报价</a>
+            <a class="secondary-link" href="https://www.csair.com/cn/">南航官网复核</a>
+          </div>
+          <div class="note">建议优先用飞猪 App 或南航官方渠道复核最终含税价、行李额、退改签。</div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-header">
+          <div class="rank">
+            <span class="pill">同日备选</span>
+            <span class="price">待复核</span>
+          </div>
+          <div class="flight-name">
+            <h3>JD5291</h3>
+            <span class="airline">首都航空</span>
+          </div>
+          <span class="pill">周五傍晚出发</span>
+        </div>
+        <div class="times">
+          <div class="time-block">
+            <span class="time">16:10</span>
+            <span class="airport">北京大兴 PKX<br>5月29日 周五</span>
+          </div>
+          <div class="arrow">3小时30分</div>
+          <div class="time-block">
+            <span class="time">19:40</span>
+            <span class="airport">南宁吴圩 T2<br>5月29日 周五</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="score">
+            <div class="metric">
+              <span>到达时间</span>
+              <strong>最好</strong>
+            </div>
+            <div class="metric">
+              <span>请假影响</span>
+              <strong>可能半天</strong>
+            </div>
+            <div class="metric">
+              <span>下单确定性</span>
+              <strong>需复核</strong>
+            </div>
+          </div>
+          <div class="analysis">
+            <div class="analysis-section">
+              <h4>优点</h4>
+              <ul>
+                <li>晚上 19:40 到南宁，落地后还能吃饭和入住。</li>
+                <li>比 20:00 起飞的航班更不折腾，到达体验明显更好。</li>
+              </ul>
+            </div>
+            <div class="analysis-section">
+              <h4>缺点</h4>
+              <ul>
+                <li>16:10 起飞，对正常下班不友好，可能需要半天假或早退。</li>
+                <li>之前飞猪深链出现过往返组合不可售，需要手动在 App 里确认。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="button-row">
+            <a class="book-link" href="https://www.fliggy.com/">手动搜飞猪</a>
+            <span class="secondary-link">搜 JD5291</span>
+          </div>
+          <div class="note">适合你愿意为更舒服的到达时间换半天假时再选。</div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-header">
+          <div class="rank">
+            <span class="pill warn">退而求其次</span>
+            <span class="price">待复核</span>
+          </div>
+          <div class="flight-name">
+            <h3>周六早班</h3>
+            <span class="airline">多航司候选</span>
+          </div>
+          <span class="pill">第二天早上出发</span>
+        </div>
+        <div class="times">
+          <div class="time-block">
+            <span class="time">08:00</span>
+            <span class="airport">北京大兴 PKX<br>5月30日 周六</span>
+          </div>
+          <div class="arrow">约3小时20分</div>
+          <div class="time-block">
+            <span class="time">11:20</span>
+            <span class="airport">南宁吴圩 T2<br>5月30日 周六</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="score">
+            <div class="metric">
+              <span>时间利用</span>
+              <strong>一般</strong>
+            </div>
+            <div class="metric">
+              <span>执行难度</span>
+              <strong>较低</strong>
+            </div>
+            <div class="metric">
+              <span>推荐条件</span>
+              <strong>周五太差</strong>
+            </div>
+          </div>
+          <div class="analysis">
+            <div class="analysis-section">
+              <h4>优点</h4>
+              <ul>
+                <li>不用周五下班赶机场，睡一晚再出发更稳。</li>
+                <li>中午前后到南宁，下午还能安排轻量行程。</li>
+              </ul>
+            </div>
+            <div class="analysis-section">
+              <h4>缺点</h4>
+              <ul>
+                <li>相比周五晚走，少了一个南宁夜晚和周六上午。</li>
+                <li>只有在周五晚票价明显变贵或到达太晚时才该反超。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="button-row">
+            <a class="book-link" href="https://www.fliggy.com/">手动搜飞猪</a>
+            <span class="secondary-link">5月30日早班</span>
+          </div>
+          <div class="note">后续接实时数据后，这张卡会显示具体航班号、价格和可订链接。</div>
+        </div>
+      </article>
+    </section>
+
+    <section class="summary" aria-label="初步结论">
+      <div>
+        <h2>当前结论</h2>
+        <p>如果你的周五下班到大兴不紧张，CZ6284 是这轮的首选：价格低、时间顺序符合偏好、且网页已经能看到可订报价。</p>
+      </div>
+      <div>
+        <h2>下一版可改进</h2>
+        <p>把 FlyAI 实时结果接进来后，可以自动生成卡片、标注网页不可订风险，并把“周五晚太晚/太贵”的阈值做成可调选项。</p>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
